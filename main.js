@@ -1,6 +1,7 @@
 let Parser = require('rss-parser');
 let parser = new Parser({
         timeout: 5000,
+        headers: {'User-Agent': 'Dominic Carroll dom@dominiccarroll.com'}
     });
 
 (async () => {
