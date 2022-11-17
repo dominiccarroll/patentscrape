@@ -20,17 +20,14 @@ function timeout(ms) {
     for (var i = 0; i < 20; i++) {
         let url = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&CIK=&type=8-k&company=&dateb=&owner=include&start=" + filingsIndex[0] + "&count=" + filingsIndex[1] + "&output=atom";
         let feed = await parser.parseURL(url);
-
-        feed.items.forEach(item => {
-
+        console.log('new page');
+        for (let item of feed.items) {
             let textUrl = item.link.replace('-index.htm', '.txt');
-            
+        
             console.log(textUrl);
-
-            
-        });
-
-
+            await timeout(100);
+        }
+        
         // New page
         filingsIndex[0] = filingsIndex[0] + 41;
         filingsIndex[1] = filingsIndex[1] + 40;
