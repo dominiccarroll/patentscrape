@@ -6,6 +6,18 @@ let parser = new Parser({
         headers: {'User-Agent': 'Dominic Carroll dom@dominiccarroll.com'}
     });
 
+let keywordScores = {
+    ["licensing agreement"]: 0.99,
+    ["license agreement"]: 0.99,
+    ["upfront fee"]: 0.9,
+    ["milestone payment"]: 0.9,
+    ["milestone payments"]: 0.9,
+    ["patent"]: 0.7,
+    ["intellectual property"]: 0.7,
+    ["upfront"]: 0.7,
+    ["milestone"]: 0.7
+}
+
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,16 +41,18 @@ function timeout(ms) {
                     'User-Agent': 'Dominic Carroll dom@dominiccarroll.com'
                 }
             }
-            request(requestOptions, function (error, response, body) {
-                // console.error('error:', error); 
-                // console.log('statusCode:', response && response.statusCode);
-                let foo = 'no';
-                if (body.toLowerCase().includes('license')) {       // HAVE A WEIGHTED SCORE WITH VARIOUS KEYWORDS AND SCORE WILL BE PROBABILITY(IS IP LICENSE)
-                    foo = textUrl;
+            request(requestOptions, function (error, response, body) { //https://www.npmjs.com/package/request#custom-http-headers
+                let wordEntries = Object.entries(keywordScores);
+                let score = 1;
+                for (let [wordKey, wordValue] of wordEntries) {
+                    if (body.toLowerCase().includes(wordKey)) {
+                        score = score * (1 + wordValue);
+                    }
                 }
-                console.log(foo); 
+
+                console.log("Score: " + score + "      Link: " + textUrl);
             });
-            await timeout(1000);
+            await timeout(500);
         }
         
         // New page
