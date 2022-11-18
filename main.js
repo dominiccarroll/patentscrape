@@ -7,8 +7,8 @@ let parser = new Parser({
     });
 
 let keywordScores = {
-    ["licensing agreement"]: 0.99,
-    ["license agreement"]: 0.99,
+    ["licensing agreement"]: 1,
+    ["license agreement"]: 1,
     ["upfront fee"]: 0.9,
     ["milestone payment"]: 0.9,
     ["milestone payments"]: 0.9,
@@ -25,7 +25,7 @@ function timeout(ms) {
 
 (async () => {
     let output = '';
-    let filingsIndex = [0, 40]
+    let filingsIndex = [0, 40];
     
 
     // iterate through feed pages
