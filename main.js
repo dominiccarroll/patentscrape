@@ -1,4 +1,4 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const request = require('request');
 
 let Parser = require('rss-parser');
 let parser = new Parser({
@@ -23,9 +23,22 @@ function timeout(ms) {
         console.log('new page');
         for (let item of feed.items) {
             let textUrl = item.link.replace('-index.htm', '.txt');
-        
-            console.log(textUrl);
-            await timeout(100);
+            let requestOptions = {
+                url: textUrl,
+                headers: {
+                    'User-Agent': 'Dominic Carroll dom@dominiccarroll.com'
+                }
+            }
+            request(requestOptions, function (error, response, body) {
+                // console.error('error:', error); 
+                // console.log('statusCode:', response && response.statusCode);
+                let foo = 'no';
+                if (body.toLowerCase().includes('license')) {       // HAVE A WEIGHTED SCORE WITH VARIOUS KEYWORDS AND SCORE WILL BE PROBABILITY(IS IP LICENSE)
+                    foo = textUrl;
+                }
+                console.log(foo); 
+            });
+            await timeout(1000);
         }
         
         // New page
